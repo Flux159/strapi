@@ -58,7 +58,7 @@ module.exports = {
    * @return {Object}
    */
 
-  update: async (ctx, next) => {
+  update: async (ctx) => {
     return strapi.services.<%= id %>.edit(ctx.params, ctx.request.body) ;
   },
 
@@ -68,7 +68,7 @@ module.exports = {
    * @return {Object}
    */
 
-  destroy: async (ctx, next) => {
+  destroy: async (ctx) => {
     return strapi.services.<%= id %>.remove(ctx.params);
   },
 
@@ -78,7 +78,7 @@ module.exports = {
    * @return {Object}
    */
 
-  createRelation: async (ctx, next) => {
+  createRelation: async (ctx) => {
     return strapi.services.<%= id %>.addRelation(ctx.params, ctx.request.body);
   },
 
@@ -88,7 +88,7 @@ module.exports = {
    * @return {Object}
    */
 
-  updateRelation: async (ctx, next) => {
+  updateRelation: async (ctx) => {
     return strapi.services.<%= id %>.editRelation(ctx.params, ctx.request.body);
   },
 
@@ -98,7 +98,7 @@ module.exports = {
    * @return {Object}
    */
 
-  destroyRelation: async (ctx, next) => {
+  destroyRelation: async (ctx) => {
     return strapi.services.<%= id %>.removeRelation(ctx.params, ctx.request.body);
   }
 };

@@ -10,7 +10,7 @@
 const _ = require('lodash');
 
 // Strapi utilities.
-const utils = require('strapi-hook-bookshelf/lib/utils/');
+// const utils = require('strapi-hook-bookshelf/lib/utils/');
 
 module.exports = {
 
@@ -23,6 +23,7 @@ module.exports = {
   fetchAll: (params) => {
     // Convert `params` object to filters compatible with Bookshelf.
     const filters = strapi.utils.models.convertParams('<%= globalID.toLowerCase() %>', params);
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
     // Select field to populate.
     const populate = <%= globalID %>.associations
       .filter(ast => ast.autoPopulate !== false)
@@ -32,7 +33,7 @@ module.exports = {
       _.forEach(filters.where, (where, key) => {
         if (_.isArray(where.value)) {
           for (const value in where.value) {
-            qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
+            qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value]);
           }
         } else {
           qb.where(key, where.symbol, where.value);
@@ -58,6 +59,7 @@ module.exports = {
 
   fetch: (params) => {
     // Select field to populate.
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
     const populate = <%= globalID %>.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias);
@@ -76,12 +78,13 @@ module.exports = {
   count: (params) => {
     // Convert `params` object to filters compatible with Bookshelf.
     const filters = strapi.utils.models.convertParams('<%= globalID.toLowerCase() %>', params);
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
 
     return <%= globalID %>.query(function(qb) {
       _.forEach(filters.where, (where, key) => {
         if (_.isArray(where.value)) {
           for (const value in where.value) {
-            qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value])
+            qb[value ? 'where' : 'orWhere'](key, where.symbol, where.value[value]);
           }
         } else {
           qb.where(key, where.symbol, where.value);
@@ -98,6 +101,7 @@ module.exports = {
 
   add: async (values) => {
     // Extract values related to relational data.
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
     const relations = _.pick(values, <%= globalID %>.associations.map(ast => ast.alias));
     const data = _.omit(values, <%= globalID %>.associations.map(ast => ast.alias));
 
@@ -116,11 +120,12 @@ module.exports = {
 
   edit: async (params, values) => {
     // Extract values related to relational data.
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
     const relations = _.pick(values, <%= globalID %>.associations.map(ast => ast.alias));
     const data = _.omit(values, <%= globalID %>.associations.map(ast => ast.alias));
 
     // Create entry with no-relational data.
-    const entry = <%= globalID %>.forge(params).save(data, { path: true });
+    <%= globalID %>.forge(params).save(data, { path: true });
 
     // Create relational data and return the entry.
     return <%= globalID %>.updateRelations(Object.assign(params, { values: relations }));
@@ -134,6 +139,8 @@ module.exports = {
 
   remove: async (params) => {
     params.values = {};
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
+
     <%= globalID %>.associations.map(association => {
       switch (association.nature) {
         case 'oneWay':
@@ -163,6 +170,7 @@ module.exports = {
    */
 
   search: async (params) => {
+    const <%= globalID %> = strapi.models.<%= globalID.toLowerCase() %>;
     // Convert `params` object to filters compatible with Bookshelf.
     const filters = strapi.utils.models.convertParams('<%= globalID.toLowerCase() %>', params);
     // Select field to populate.
